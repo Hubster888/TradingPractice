@@ -1,10 +1,12 @@
 package practice;
 
+import com.oanda.v20.account.AccountID;
+
 /**
  * A POJO that holds account information. No setters are needed
  * as all variables are final and are initialised in the constructors.
  * */
-public class Account<T> {
+public class AccountOther<T> {
 	
 	private final double totalBalance;
 	private final double unrealisedPnl;
@@ -14,7 +16,7 @@ public class Account<T> {
 	private final double netAssetValue;
 	private final long openTrades;
 	private final String currency;
-	private final T accountID;
+	private final AccountID accountID;
 	private final String toStr;
 	private final double amountAvaliableRatio;
 	/**
@@ -28,9 +30,9 @@ public class Account<T> {
 	 * */
 	private final int hash;
 	
-	public Account(final double totalBalance, double unrealisedPnl,
+	public AccountOther(final double totalBalance, double unrealisedPnl,
 			double realisedPnl, double marginUsed, double marginAvaliable,
-			long openTrades, String currency, T accountID, double marginRate) {
+			long openTrades, String currency, AccountID accountID, double marginRate) {
 		this.totalBalance = totalBalance;
 		this.unrealisedPnl = unrealisedPnl;
 		this.realisedPnl = realisedPnl;
@@ -63,7 +65,7 @@ public class Account<T> {
 		return this.toStr;
 	}
 	
-	public T getAccountID() {
+	public AccountID getAccountID() {
 		return this.accountID;
 	}
 	
@@ -110,7 +112,7 @@ public class Account<T> {
 		if(getClass() != obj.getClass()) {return false;}
 		
 		@SuppressWarnings("unchecked")
-		Account<T> other = (Account<T>) obj;
+		AccountOther<T> other = (AccountOther<T>) obj;
 		if(accountID == null) {
 			if(other.accountID != null){return false;}
 		}else if(!accountID.equals(other.accountID)) {return false;}

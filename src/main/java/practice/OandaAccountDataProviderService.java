@@ -2,47 +2,37 @@ package practice;
 
 import com.oanda.v20.Context;
 import com.oanda.v20.ContextBuilder;
-import com.oanda.v20.account.AccountID;
-import com.oanda.v20.account.AccountSummary;
+import com.oanda.v20.account.*;
+import com.oanda.v20.transaction.TransactionID;
 
-public class OandaAccountDataProviderService implements AccountDataProvider<String> {
+public class OandaAccountDataProviderService {
 	private final String url;
-	private final String accountID;
+	private final AccountID accountId;
 	private final String accessToken;
-	private final Account<String> account;
+	private Account myAccount;
+	private final Context ctx;
 	
-	public OandaAccountDataProviderService(final String url, final String accountID, final String accessToken) {
+	public OandaAccountDataProviderService(String url, String accessToken, AccountID accountId) {
+		this.accountId = accountId;
 		this.url = url;
-		this.accountID = accountID;
 		this.accessToken = accessToken;
-		this.account = getLatestAccountInfo(this.accountID);
-	}
-
-	public Account<String> getLatestAccountInfo(String accountId) {
-		Context ctx = new ContextBuilder(url)
+		ctx = new ContextBuilder(url)
 				.setToken(accessToken)
 				.setApplication("Practice")
 				.build();
-		AccountSummary summary = null;
-		Account<String> account = null;
-		try {
-			summary = ctx.account.summary(
-					new AccountID(accountID)).getAccount();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if(summary != null) {
-			account = new Account<String>(summary.getBalance().doubleValue(), summary.getUnrealizedPL().doubleValue(), summary.getPl().doubleValue(),
-					summary.getMarginUsed().doubleValue(), summary.getMarginAvailable().doubleValue(), summary.getOpenTradeCount().longValue(), summary.getCurrency().toString(),
-					this.accountID, summary.getMarginRate().doubleValue());
-		}
-		
-		return account;
+		makeAccount();
 	}
 	
-	public Account<String> getAccount(){
-		return this.account;
+	private void makeAccount() {
+		try {
+			AccountGetResponse accountStateResponse = ctx.account.get(accountId);
+            myAccount = accountStateResponse.getAccount();
+		}catch(Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
-
+	
+	public Account getAccount() {
+		return this.myAccount;
+	}
 }

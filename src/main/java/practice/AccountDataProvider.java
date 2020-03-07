@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.Collection;
+import com.oanda.v20.account.*;
 
 /**
  * A provider of Account information. An account information might
@@ -31,6 +32,6 @@ public interface AccountDataProvider<T> {
 	 * @return Account information for the given accountID
 	 * */
 	
-	Account<T> getLatestAccountInfo(T accountId);
+	Account getLatestAccountInfo(AccountID accountId);
 	
 }
