@@ -5,6 +5,7 @@ import com.oanda.v20.account.AccountID;
 /**
  * A POJO that holds account information. No setters are needed
  * as all variables are final and are initialised in the constructors.
+ * This class is not used for the Oanda api as they supply their own
  * */
 public class AccountOther<T> {
 	
